@@ -19,21 +19,21 @@
 
 ## 각 요구사항을 토대로 설계(Collaboration Design)
 1. InputField를 통해 원하는 단어를 입력 받음
-  - InputField -> `텍스트 입력` -> Text
+   - InputField -> `텍스트 입력` -> Text
 2. 입력 받은 단어와 주소를 합침
-  - Text -> `+` -> ImageController
+   - Text -> `+` -> ImageController
 3. 위 주소에서 이미지들을 요청
-  - SendButton -> `RequestImage` -> ImageController 
+   - SendButton -> `RequestImage` -> ImageController 
 4. 요청한 이미지들을 다운로드
-  - ImageController -> `DownloadImage` -> ImageController
+   - ImageController -> `DownloadImage` -> ImageController
 5. 다운로드한 이미지를 토대로 Imgae Sprite 생성
-  - ImageController -> `Sprite.Create` -> Sprite
+   - ImageController -> `Sprite.Create` -> Sprite
 6. 이미지 객체를 생성
-  - Sprite -> `ImageObject` -> ImageController
-  - ImageController -> `Instantiate` -> ImageObject
+   - Sprite -> `ImageObject` -> ImageController
+   - ImageController -> `Instantiate` -> ImageObject
 7. 일정 속도로 위로 상승
-  - ImageObject -> `Update` -> ImageObject
-  - ImageObject -> `RiseImage` -> ImageObject
+   - ImageObject -> `Update` -> ImageObject
+   - ImageObject -> `RiseImage` -> ImageObject
 8. 일정 거리 이동 후 파괴
-  - ImageObject -> `Update` -> ImageObject
-  - ImageObject -> `SelfDestroy` -> ImageObject
+   - ImageObject -> `Update` -> ImageObject
+   - ImageObject -> `SelfDestroy` -> ImageObject
