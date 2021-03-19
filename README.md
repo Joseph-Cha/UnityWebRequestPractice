@@ -15,7 +15,7 @@
 5. 다운로드한 이미지들를 토대로 Image Sprite 생성
 6. 이미지 객체를 생성(Imagte Sprite, random position) 
 7. 일정 속도로 위로 상승
-8. 일정 거리 이동 후 파괴
+8. 일정 시간 후 파괴
 
 ## 각 요구사항을 토대로 설계(Collaboration Design)
 1. InputField를 통해 원하는 단어를 입력 받음
@@ -23,6 +23,7 @@
 2. 입력 받은 단어와 주소를 합침
    - Text -> `+` -> ImageController
 3. 위 주소에서 이미지들을 요청
+   - SendButton -> `OnRequest` -> ImageController 
    - SendButton -> `RequestImage` -> ImageController 
 4. 요청한 이미지들을 다운로드
    - ImageController -> `DownloadImage` -> ImageController
@@ -34,6 +35,6 @@
 7. 일정 속도로 위로 상승
    - ImageObject -> `Update` -> ImageObject
    - ImageObject -> `RiseImage` -> ImageObject
-8. 일정 거리 이동 후 파괴
+8. 일정 시간 후 파괴
    - ImageObject -> `Update` -> ImageObject
    - ImageObject -> `SelfDestroy` -> ImageObject

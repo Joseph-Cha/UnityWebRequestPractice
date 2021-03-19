@@ -1,18 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class ImageObject : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private Image _imageView;
+
+    public ImageObject(Sprite texture)
     {
         
+        _imageView = gameObject.AddComponent<Image>();
+        _imageView.sprite = texture;        
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        //transform.Translate()
     }
 }
