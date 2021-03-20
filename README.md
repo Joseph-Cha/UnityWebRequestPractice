@@ -19,6 +19,7 @@
 
 ## 클래스 식별
 - Crawling Manager
+   - Keyword를 통해 원하는 정보를 Crawling
    - 원하는 주소에서 Crawling을 실행하는 최종 인테페이스 제공
    - Crawling을 통해 img scr URL 정보들을 저장
    - img scr url에서 sprite 생성해서 List로 저장
