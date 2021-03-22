@@ -17,24 +17,35 @@
 7. 일정 속도로 위로 상승
 8. 일정 시간 후 파괴
 
-## 각 요구사항을 토대로 설계(Collaboration Design)
-1. InputField를 통해 원하는 단어를 입력 받음
-   - InputField -> `텍스트 입력` -> Text
-2. 입력 받은 단어와 주소를 합침
-   - Text -> `+` -> ImageController
-3. 위 주소에서 이미지들을 요청
-   - SendButton -> `OnRequest` -> ImageController 
-   - SendButton -> `RequestImage` -> ImageController 
-4. 요청한 이미지들을 다운로드
-   - ImageController -> `DownloadImage` -> ImageController
-5. 다운로드한 이미지를 토대로 Imgae Sprite 생성
-   - ImageController -> `Sprite.Create` -> Sprite
-6. 이미지 객체를 생성
-   - Sprite -> `ImageObject` -> ImageController
-   - ImageController -> `Instantiate` -> ImageObject
-7. 일정 속도로 위로 상승
-   - ImageObject -> `Update` -> ImageObject
-   - ImageObject -> `RiseImage` -> ImageObject
-8. 일정 시간 후 파괴
-   - ImageObject -> `Update` -> ImageObject
-   - ImageObject -> `SelfDestroy` -> ImageObject
+## 클래스 식별
+- Crawling Manager
+   - Keyword를 통해 원하는 정보를 Crawling
+   - 원하는 주소에서 Crawling을 실행하는 최종 인테페이스 제공
+   - Crawling을 통해 img scr URL 정보들을 저장
+   - img scr url에서 sprite 생성해서 List로 저장
+   - Crawling을 통해 얻은 데이터들을 보관하는 속성 값 제공
+- Image Create Manager
+   - Crawling Manager에 저장된 이미지 데이터들을 가지고 와서 랜덤으로 이미지들을 생성
+- Image Instance(Prefab)
+   - Image 컴포넌트를 가지고 있음
+   - 생성자를 통해 Image 컴포넌트의 sprite 초기화
+   - 매 프레임 마다 일정 속도로 하늘로 상승
+   - 일정 시간이 흐른 후 자동 제거
+
+## 절차 설계(Process Design)
+- 이미지 이름을 입력하고 검색 버튼 클릭
+- Crawling을 실행
+- Crawling Manager에 저장된 이미지 데이터들을 가지고 와서 랜덤으로 이미지들을 생성
+
+## 사용자 인터페이스 설계
+- 이미지 이름 입력
+   - InputField -> *입력* -> ImageName
+- 검색 버튼 클릭
+   - Button -> *click* -> ImageCreateManager                     // 버튼 클릭
+   - ImageCreateManager -> *CrawlingDate* -> CrawlingManager     // 어떤 종류의 Crawling 확인
+   - CrawlingManager -> *CrawlingImage* -> CrawlingManager       // Image Crawling 호출
+   - CrawlingManager -> *SaveSrc* -> CrawlingManager             // HTML에서 scr url 저장
+   - CrawlingManager -> *SaveSprite* -> CrawlingManager          // scr url에서 sprite 생성 후 저장
+   - CrawlingManager -> *LoadSprite* -> ImageCreateManager       // CrawlingManager에 저장된 sprite를 Load
+   - ImageCreateManager -> *CreateImageInstane* -> ImageInstance // ImageInstance를 생성
+   - ImageInstance -> *ImageInstance* -> ImageInstance           // ImageInstance 생성할 때 초기화
