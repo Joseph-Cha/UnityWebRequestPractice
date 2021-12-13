@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using TMPro;
 
-public class ImgaeWebRequest : MonoBehaviour
+public class ImageWebRequest : MonoBehaviour
 {
     public Transform Root;
     public TMP_InputField InputField;
