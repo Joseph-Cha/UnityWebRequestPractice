@@ -31,3 +31,94 @@
    - ImageWebRequest -> *GetImageURLs* -> ImageWebRequest
    - ImageWebRequest -> *RequestImage* -> ImageWebRequest
    - ImageWebRequest -> *SpawnImage* -> ImageWebRequest
+
+## 인사이트
+### UnityWebRequest를 구현하는 다양한 방법들에 대한 이해
+
+1. Coroutine과 Callback 방식을 통해 WebRequest를 구현
+   ``` C#
+   private IEnumerator RequestByCoroutine(string url, Action<UnityWebRequest> callBack)
+   {
+      UnityWebRequest uwr = UnityWebRequest.Get(url);
+      yield return uwr.SendWebRequest();
+
+      while (!uwr.isDone)
+         yield return null;
+      
+      if (uwr.isDone)
+      {
+         callBack.Invoke(uwr);
+      }
+   }
+   ```
+2. async, await을 통해 WebRequest 구현
+   ``` C#
+   private async void RequestByAsync(string url)
+   {
+      UnityWebRequest uwr = UnityWebRequest.Get(url);
+      UnityWebRequestAsyncOperation ao = uwr.SendWebRequest();
+      await ao;
+      if (ao.isDone)
+      {
+         // 이후 작업 진행
+      }
+   }
+   ```
+   단, `UnityWebRequestAsyncOperation`을 await으로 받기 위해서 아래 소스가 필요
+   ``` C#
+   using System;
+   using UnityEngine.Networking;
+   using System.Runtime.CompilerServices;
+   using UnityEngine;
+
+   public struct UnityWebRequestAwaiter : INotifyCompletion
+   {
+      private UnityWebRequestAsyncOperation asyncOp;
+      private Action continuation;
+
+      public UnityWebRequestAwaiter(UnityWebRequestAsyncOperation asyncOp)
+      {
+         this.asyncOp = asyncOp;
+         continuation = null;
+      }
+
+      public bool IsCompleted { get { return asyncOp.isDone; } }
+
+      public void GetResult() { }
+
+      public void OnCompleted(Action continuation)
+      {
+         this.continuation = continuation;
+         asyncOp.completed += OnRequestCompleted;
+      }
+
+      private void OnRequestCompleted(AsyncOperation obj)
+      {
+         continuation?.Invoke();
+      }
+   }
+
+   public static class ExtensionMethods
+   {
+      public static UnityWebRequestAwaiter GetAwaiter(this UnityWebRequestAsyncOperation asyncOp)
+      {
+         return new UnityWebRequestAwaiter(asyncOp);
+      }
+   }
+   ```
+3. `AsyncOperation`의 completed callback 방식
+   ``` C#
+   public void RequestByAsyncOperation(string name)
+   {
+      string requestUrl = string.Format(Url, imageName);
+      UnityWebRequest uwr = UnityWebRequest.Get(requestUrl);
+      uwr.SendWebRequest().completed += ao => 
+      {
+         if (uwr.isDone)
+         {
+               // 이후 작업
+         }
+         uwr.Dispose();
+      };
+   }
+   ```
