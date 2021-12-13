@@ -15,40 +15,20 @@
 5. 다운로드한 이미지들를 토대로 Image Sprite 생성
 6. 이미지 객체를 생성(Imagte Sprite, random position) 
 7. 일정 속도로 위로 상승
-8. 일정 시간 후 파괴
 
 ## 클래스 식별
-- Crawling Manager
-   - Keyword를 통해 원하는 정보를 Crawling
+- ImageWebRequest
+   - InputField에 입력된 단어로 Crawling을 실행 및 이미지 생성
    - 원하는 주소에서 Crawling을 실행하는 최종 인테페이스 제공
-   - Crawling을 통해 img scr URL 정보들을 저장
-   - img scr url에서 sprite 생성해서 List로 저장
-   - Crawling을 통해 얻은 데이터들을 보관하는 속성 값 제공
-- Image Create Manager
-   - Crawling Manager에 저장된 이미지 데이터들을 가지고 와서 랜덤으로 이미지들을 생성
-- Image Instance(Prefab)
-   - Image 컴포넌트를 가지고 있음
-   - Start에서 Image 컴포넌트의 sprite 초기화
+- ImageHandler
    - 매 프레임 마다 일정 속도로 하늘로 상승
-   - 일정 시간이 흐른 후 자동 제거
 
-## 절차 설계(Process Design)
-- 이미지 이름을 입력하고 검색 버튼 클릭
-- Crawling을 실행
-- Crawling Manager에 저장된 이미지 데이터들을 가지고 와서 랜덤으로 이미지들을 생성
-
-## 사용자 인터페이스 설계
+## Sequence 설계
 - 이미지 이름 입력
    - InputField -> *입력* -> ImageName
 - 검색 버튼 클릭
-   - Button -> *click* -> ImageCreateManager                     // 버튼 클릭
-   - ImageCreateManager -> *CrawlingDate* -> CrawlingManager     // 어떤 종류의 Crawling 확인
-   - CrawlingManager -> *CrawlingImage* -> CrawlingManager       // Image Crawling 호출
-   - CrawlingManager -> *SaveSrc* -> CrawlingManager             // HTML에서 scr url 저장
-   - CrawlingManager -> *SaveSprite* -> CrawlingManager          // scr url에서 sprite 생성 후 저장
-   - CrawlingManager -> *LoadSprite* -> ImageCreateManager       // CrawlingManager에 저장된 sprite를 Load
-   - ImageCreateManager -> *CreateImageInstane* -> ImageInstance // ImageInstance를 생성
-   - ImageInstance -> *ImageInstance* -> ImageInstance           // ImageInstance 생성할 때 초기화
-
-
-- 
+   - Button -> *click* -> ImageWebRequest
+   - ImageWebRequest -> *Request* -> ImageWebRequest
+   - ImageWebRequest -> *GetImageURLs* -> ImageWebRequest
+   - ImageWebRequest -> *RequestImage* -> ImageWebRequest
+   - ImageWebRequest -> *SpawnImage* -> ImageWebRequest
