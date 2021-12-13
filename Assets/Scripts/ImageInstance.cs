@@ -10,12 +10,17 @@ public class ImageInstance : MonoBehaviour
     public ImageInstance(Sprite sprite)
     {
         Image ??= GetComponent<Image>();
-        Image.sprite = sprite ?? null;
+        Image.sprite = sprite;
         Image?.SetNativeSize();
     }
+    
     private void Start()
     {
         StartCoroutine(DestroySelf());
+    }
+    private void Init()
+    {
+
     }
 
     private IEnumerator DestroySelf()

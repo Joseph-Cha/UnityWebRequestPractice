@@ -28,7 +28,7 @@
    - Crawling Manager에 저장된 이미지 데이터들을 가지고 와서 랜덤으로 이미지들을 생성
 - Image Instance(Prefab)
    - Image 컴포넌트를 가지고 있음
-   - 생성자를 통해 Image 컴포넌트의 sprite 초기화
+   - Start에서 Image 컴포넌트의 sprite 초기화
    - 매 프레임 마다 일정 속도로 하늘로 상승
    - 일정 시간이 흐른 후 자동 제거
 
@@ -49,3 +49,6 @@
    - CrawlingManager -> *LoadSprite* -> ImageCreateManager       // CrawlingManager에 저장된 sprite를 Load
    - ImageCreateManager -> *CreateImageInstane* -> ImageInstance // ImageInstance를 생성
    - ImageInstance -> *ImageInstance* -> ImageInstance           // ImageInstance 생성할 때 초기화
+
+
+- 

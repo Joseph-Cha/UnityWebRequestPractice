@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum DataTpye
+public enum DataType
 {
     Image
 }
-public class CrawlingManager : MonoBehaviour
+public class CrawlingManager
 {
-    public void CrawlingDate(string keyword, DataTpye dataType)
+    public static void CrawlingDate(string keyword, DataType dataType)
     {
         switch (dataType)
         {
-            case DataTpye.Image:
+            case DataType.Image:
                 CrawlingImage(keyword);
                 break;
             default:
@@ -21,14 +21,16 @@ public class CrawlingManager : MonoBehaviour
         }
     }
 
-    private void CrawlingImage(string keyword)
+    private static void CrawlingImage(string keyword)
     {
-
+        
     }
+
     private void SaveSrc()
     {
 
     }
+
     private void SaveSprite()
     {
 
