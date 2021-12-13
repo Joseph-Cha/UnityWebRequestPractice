@@ -1,18 +1,19 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using HtmlAgilityPack;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using TMPro;
 
 public class ImgaeWebRequest : MonoBehaviour
 {
     public Transform Root;
-    public string requestUrl { get; private set; } = "https://www.google.com/search?q=train&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiOu72Votb0AhUisVYBHQRzB6UQ_AUoAXoECAEQAw&cshid=1639037441866438&biw=1812&bih=978&dpr=1";
+    public TMP_InputField InputField;
+    private const string Url = "https://www.google.com/search?q={0}&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiOu72Votb0AhUisVYBHQRzB6UQ_AUoAXoECAEQAw&cshid=1639037441866438&biw=1812&bih=978&dpr=1";
+    private string imageName => InputField.text;
     public void Request(string name)
     {
-        // requestUrl += name; 
+        string requestUrl = string.Format(Url, imageName);
         UnityWebRequest uwr = UnityWebRequest.Get(requestUrl);
         uwr.SendWebRequest().completed += ao => 
         {
