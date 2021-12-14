@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class ImageWebRequest : MonoBehaviour
 {
@@ -11,16 +12,17 @@ public class ImageWebRequest : MonoBehaviour
     public TMP_InputField InputField;
     private const string Url = "https://www.google.com/search?q={0}&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiOu72Votb0AhUisVYBHQRzB6UQ_AUoAXoECAEQAw&cshid=1639037441866438&biw=1812&bih=978&dpr=1";
     private string imageName => InputField.text;
-    public void Request(string name)
+
+    public void Request()
     {
         string requestUrl = string.Format(Url, imageName);
         UnityWebRequest uwr = UnityWebRequest.Get(requestUrl);
         uwr.SendWebRequest().completed += ao => 
         {
-            if (uwr.isDone)
+            if (ao.isDone)
             {
                 string html = uwr.downloadHandler.text; 
-                var urls = GetImageURLs(html);
+                IEnumerable<string> urls = GetImageUrls(html);
                 
                 foreach (string url in urls)
                 {
@@ -34,19 +36,13 @@ public class ImageWebRequest : MonoBehaviour
         };
     }
 
-    private IEnumerable<string> GetImageURLs(string html)
+    private IEnumerable<string> GetImageUrls(string html)
     {
-        HtmlDocument htmlDoc = new HtmlDocument();
-        List<string> urls = new List<string>();
+        var htmlDoc = new HtmlDocument();
         htmlDoc.LoadHtml(html);
-        var nodes = htmlDoc.DocumentNode.Descendants("img");
-        
-        foreach (var node in nodes)
-        {
-            urls.Add(node.Attributes["src"].Value);
-        }
+        IEnumerable<HtmlNode> nodes = htmlDoc.DocumentNode.Descendants("img");
 
-        return urls;
+        return nodes.Select(n => n.Attributes["src"].Value);
     }
 
     private void RequestImage(string url)
