@@ -33,7 +33,7 @@
    - ImageWebRequest -> *SpawnImage* -> ImageWebRequest
 
 ## 인사이트
-### UnityWebRequest를 구현하는 다양한 방법들에 대한 이해
+### 1. UnityWebRequest를 구현하는 다양한 방법들에 대한 이해
 
 1. Coroutine과 Callback 방식을 통해 WebRequest를 구현
    ``` C#
@@ -122,3 +122,9 @@
       };
    }
    ```
+
+### 2. AsyncOperation은 어떻게 비동기로 작업을 처리해줄까?
+
+AsyncOperation.completed가 invoke 될 때 Call Stack을 보면 Main Thread에서 해당 작업을 처리하는 것을 볼 수 있다.
+
+즉 AsyncOperation은 싱글 쓰레드 비동기로 해당 작업을 처리하는 것을 알 수 있다.
