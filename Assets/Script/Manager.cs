@@ -7,7 +7,9 @@ public class Manager : MonoBehaviour
     static Manager instance;
     static Manager Instance { get { Init(); return instance; } }
     private ResourceManager resourceManager = new ResourceManager();
+    private StockDataController stockDataManager = new StockDataController();
     public static ResourceManager Resource => Instance.resourceManager;
+    public static StockDataController Stock => Instance.stockDataManager;
 
     // Start is called before the first frame update
     void Start() => Init();
