@@ -1,6 +1,3 @@
-using System;
-using UnityEngine;
-
 public class MyStock
 {
     public int Price;

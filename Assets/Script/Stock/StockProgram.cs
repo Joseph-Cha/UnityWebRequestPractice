@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 using UnityEngine;
@@ -14,7 +13,7 @@ public class StockProgram : MonoBehaviour
         string url = string.Format(
             "https://fchart.stock.naver.com/sise.nhn?symbol={0}&timeframe=day&count={1}&requestType=0", 
             Setting.StockCode, Setting.ShowCount);
-        
+
         UnityWebRequest uwr = UnityWebRequest.Get(url);
         uwr.SendWebRequest().completed += ao => 
         {
@@ -57,7 +56,7 @@ public class StockProgram : MonoBehaviour
             }
 
             myAccount.SellStock(stocks[tomorrow].StartPrice);
-            Debug.Log($" {stocks[tomorrow].Date.ToString("yyyy/mm/dd")} 수익: {string.Format("{0:#,0}", myAccount.GetRevenue())}원");
+            Debug.Log($"{stocks[tomorrow].Date.ToString("yyyy/mm/dd")} 수익: {string.Format("{0:#,0}", myAccount.GetRevenue())}원");
         }
 
         stockDataController.RemoveStockDatas();

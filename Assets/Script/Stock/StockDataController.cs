@@ -9,7 +9,7 @@ public class StockDataController
     public void ParseStockData(XmlNode node)
     {
         string data = node.Attributes["data"].Value;
-        CreateStockData(data);
+        CreateStockData(data);  
     }
 
     private void CreateStockData(string data)
