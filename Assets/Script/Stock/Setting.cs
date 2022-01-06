@@ -6,5 +6,5 @@ public class Setting : ScriptableObject
     public int Balance;
     public string StockCode;
     public string ShowCount;
-    public int k;
+    public float k;
 }

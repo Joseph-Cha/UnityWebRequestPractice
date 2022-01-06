@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using CodeMonkey.Utils;
+using System;
 
 public class WindowGraph : MonoBehaviour
 {
-    public Sprite CircleSprite;
+    public Sprite CircleSprite; 
     public RectTransform GraphContainer;
-    public RectTransform LabelTemplateX;
+    public DateItem LabelTemplateX;
     public RectTransform LabelTemplateY;
     public int MaximumY;
+    private GameObject lastCircleGameObject = null;
 
-    private void Awake()
-    {
-        List<int> valueList = new List<int>() { 5, 98, 56, 45, 30, 22, 16, 15, 13, 17, 25, 37, 30, 36, 33 };
-        ShowGraph(valueList);
-    }
+    private int xPosition = 0;
+    public int XPosition => xPosition += 50;
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
     {
@@ -25,22 +24,19 @@ public class WindowGraph : MonoBehaviour
         gameObject.GetComponent<Image>().sprite = CircleSprite;
         RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = anchoredPosition;
-        rectTransform.sizeDelta = new Vector2(11, 11);
+        rectTransform.sizeDelta = new Vector2(5, 5);
         rectTransform.anchorMin = new Vector2(0, 0);
         rectTransform.anchorMax = new Vector2(0, 0);
 
         return gameObject;
     }
 
-    private void ShowGraph(List<int> valueList)
+    public void ShowGraph(int value, DateTime dateTime)
     {
         float graphHeight = GraphContainer.sizeDelta.y;
-        float xSize = 50f;
-        GameObject lastCircleGameObject = null;
-        for (int i = 0; i < valueList.Count; i++)
         {
-            float xPosition = i * xSize;
-            float yPosition = (valueList[i] * MaximumY) / graphHeight;
+            float xPosition = XPosition;
+            float yPosition = value * (graphHeight / MaximumY);
             GameObject circleGameObject = CreateCircle(new Vector2(xPosition, yPosition));
             if (lastCircleGameObject != null)
             {
@@ -48,23 +44,26 @@ public class WindowGraph : MonoBehaviour
             }
             lastCircleGameObject = circleGameObject;
 
-            RectTransform labelX = Instantiate(LabelTemplateX);
-            labelX.SetParent(GraphContainer, false);
+            DateItem labelX = Instantiate(LabelTemplateX);
+            labelX.transform.SetParent(GraphContainer, false);
             labelX.gameObject.SetActive(true);
-            labelX.anchoredPosition = new Vector2(xPosition, -20f);
-            labelX.GetComponent<Text>().text =  i.ToString();
+            labelX.GetComponent<RectTransform>().anchoredPosition = new Vector2(xPosition, -20f);
+            labelX.SetDate(
+                dateTime.Year.ToString().Substring(2) + "년", 
+                dateTime.Month.ToString() + "월", 
+                dateTime.Day.ToString() + "일");
         }
 
-        int separatorCount = 20;
+        int separatorCount = 10;
         for (int i = 0; i < separatorCount; i++)
         {
             RectTransform labelY = Instantiate(LabelTemplateY);
             labelY.SetParent(GraphContainer, false);
             labelY.gameObject.SetActive(true);
-            float normalizedValue = i * 1f / separatorCount;
-            labelY.anchoredPosition = new Vector2(-7f, normalizedValue * graphHeight);
-            labelY.GetComponent<Text>().text =  Mathf.RoundToInt(normalizedValue * MaximumY).ToString();
-        }
+            float normalizedValue = graphHeight / MaximumY;
+            labelY.anchoredPosition = new Vector2(-7f, (normalizedValue * MaximumY * i) / separatorCount);
+            labelY.GetComponent<Text>().text =  string.Format("{0:#,0}", Mathf.RoundToInt(MaximumY * i / separatorCount)) + "천원";
+        } 
     }
 
     private void CreateDotConnection(Vector2 dotPositionA, Vector2 dotPositionB)

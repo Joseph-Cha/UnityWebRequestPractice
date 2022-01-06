@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 public class StockProgram : MonoBehaviour
 {
     public Setting Setting;
+    public WindowGraph WindowGraph;
     private StockDataController stockDataController = new StockDataController();
  
     public void Request()
@@ -51,13 +52,13 @@ public class StockProgram : MonoBehaviour
 
             if (stocks[today].MaxPrice > stocks[today].StartPrice + stocks[yesterday].Range * Setting.k)
             {
-                int buyPrice = stocks[today].StartPrice + stocks[yesterday].Range * Setting.k + 100;
+                int buyPrice = (int)(stocks[today].StartPrice + stocks[yesterday].Range * Setting.k + 100);
                 myAccount.BuyStock(buyPrice);
             }
 
             myAccount.SellStock(stocks[tomorrow].StartPrice);
-            Debug.Log($"{stocks[tomorrow].Date.ToString("yyyy/mm/dd")} 수익: {string.Format("{0:#,0}", myAccount.GetRevenue())}원");
-        }
+            WindowGraph.ShowGraph(myAccount.GetRevenue() / 1000, stocks[tomorrow].Date);
+            Debug.Log($"{stocks[tomorrow].Date.ToString("yyyy/mm/dd")} 수익: {string.Format("{0:#,0}", myAccount.GetRevenue())}원");        }
 
         stockDataController.RemoveStockDatas();
     }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e3ba00c7c6f6ce4d8449f4abf1b3bd2, type: 3}
   m_Name: Setting
   m_EditorClassIdentifier: 
-  Balance: 10000000
+  Balance: 20000000
   StockCode: 005930
   ShowCount: 300
-  k: 0
+  k: 0.8
